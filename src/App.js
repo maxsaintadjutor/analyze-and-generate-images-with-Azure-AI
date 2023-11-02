@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-  return (
-      <div className="App">
-        <h1>Application de Vision par Ordinateur</h1>
-        <label htmlFor="imageUrl">URL de l'image :</label>
-=======
 import React, { Component } from 'react';
 import analyzeImage from './azure-image-analysis';
 
@@ -35,7 +29,6 @@ class App extends Component {
     return (
       <div>
         <h1>Analyse d'image avec Azure AI Vision</h1>
->>>>>>> 5cdc51d4b008ed1c03f71290777c6b82819c9755
         <input
           type="text"
           placeholder="URL de l'image"
@@ -58,4 +51,3 @@ class App extends Component {
 }
 
 export default App;
-
