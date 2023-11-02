@@ -1,44 +1,50 @@
 import React, { Component } from 'react';
-import './App.css';
+import analyzeImage from './azure-image-analysis';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      imageUrl: '', // Stocker l'URL de l'image
+      imageUrl: '',
+      analysisResults: null,
+      isLoading: false,
     };
   }
 
-  // Gérer le changement dans la zone de texte
-  handleInputChange = (event) => {
-    this.setState({ imageUrl: event.target.value });
-  }
+  handleAnalyzeClick = async () => {
+    this.setState({ isLoading: true });
 
-  // Gérer le clic sur le bouton d'analyse d'image
-  handleAnalyzeClick = () => {
-    // Ajoutez ici la logique pour l'analyse d'image (dans les exercices suivants)
-    console.log('Analyse d\'image déclenchée');
-  }
+    const { imageUrl } = this.state;
+    const results = await analyzeImage(imageUrl);
 
-  // Gérer le clic sur le bouton de génération d'image
-  handleGenerateClick = () => {
-    // Ajoutez ici la logique pour la génération d'image (dans les exercices suivants)
-    console.log('Génération d\'image déclenchée');
+    this.setState({
+      analysisResults: results,
+      isLoading: false,
+    });
   }
 
   render() {
+    const { imageUrl, analysisResults, isLoading } = this.state;
+
     return (
-      <div className="App">
-        <h1>Application de Vision par Ordinateur</h1>
-        <label htmlFor="imageUrl">URL de l'image :</label>
+      <div>
+        <h1>Analyse d'image avec Azure AI Vision</h1>
         <input
           type="text"
-          id="imageUrl"
-          value={this.state.imageUrl}
-          onChange={this.handleInputChange}
+          placeholder="URL de l'image"
+          value={imageUrl}
+          onChange={(e) => this.setState({ imageUrl: e.target.value })}
         />
         <button onClick={this.handleAnalyzeClick}>Analyser</button>
-        <button onClick={this.handleGenerateClick}>Générer</button>
+
+        {isLoading && <p>En cours d'analyse...</p>}
+
+        {analysisResults && (
+          <div>
+            <h2>Résultats de l'analyse :</h2>
+            <pre>{JSON.stringify(analysisResults, null, 2)}</pre>
+          </div>
+        )}
       </div>
     );
   }
